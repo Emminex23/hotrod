@@ -75,10 +75,9 @@ var seed = []Location{
 		Coordinates: "577,322",
 	},
         {
-		ID:          731,
+                ID:          731,
+		Name:        "Japanese Desserts",
 		Coordinates: "728,326",
-	},
-        {
         },
 }
 
