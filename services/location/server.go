@@ -123,6 +123,14 @@ func (s *Server) getLocation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, err := json.Marshal(response)
+
+        type AltResponse struct {
+                ID int
+                Coordinates string
+        }
+        altResponse := &AltResponse{ID: response.ID, Coordinates: response.Coordinates}
+        data, err := json.Marshal(altResponse)
+
 	if httperr.HandleError(w, err, http.StatusInternalServerError) {
 		s.logger.For(ctx).Error("cannot marshal response", zap.Error(err))
 		return

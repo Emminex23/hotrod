@@ -8,6 +8,6 @@ spec:
       name: location
     customizations:
       images:
-        - image: emminex23/hotrod-smart-test:latest
+        - image: emminex23/hotrod-smart-test:bb0ff4a8caf0859d3f3512a1a5b30a2ae8c91ab0-linux-amd64
           container: hotrod
 
