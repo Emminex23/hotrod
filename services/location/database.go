@@ -74,9 +74,8 @@ var seed = []Location{
                 Name:        "Trom Chocolatier",
 		Coordinates: "577,322",
 	},
-	{
+        {
 		ID:          731,
-                Name:        "Japanese Desserts",
 		Coordinates: "728,326",
 	},
 }
