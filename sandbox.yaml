@@ -6,3 +6,8 @@ spec:
       kind: Deployment
       namespace: hotrod
       name: location
+    customizations:
+      images:
+        - image: emminex23/hotrod-smart-test:latest
+          container: hotrod
+
