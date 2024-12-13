@@ -19,18 +19,18 @@ build-frontend-app:
 	cd services/frontend/react_app && ./scripts/build.sh
 
 dev-build-docker: build
-	$(DOCKER) build -t signadot/hotrod:latest \
+	$(DOCKER) build -t emminex23/hotrod:latest \
 		--platform $(GOOS)/$(GOARCH) \
 		.
 
 build-docker: build
-	$(DOCKER) build -t signadot/hotrod:$(RELEASE_TAG)-$(GOOS)-$(GOARCH) \
+	$(DOCKER) build -t emminex23/hotrod:$(RELEASE_TAG)-$(GOOS)-$(GOARCH) \
 		--platform $(GOOS)/$(GOARCH) \
 		--provenance false \
 		.
 
 push-docker: build-docker
-	$(DOCKER) push signadot/hotrod:$(RELEASE_TAG)-$(GOOS)-$(GOARCH)
+	$(DOCKER) push emminex23/hotrod:$(RELEASE_TAG)-$(GOOS)-$(GOARCH)
 
 
 build-release:
@@ -45,7 +45,7 @@ release-images.txt:
 	rm -f dist/release-images.txt
 	for os in $(RELEASE_OSES); do \
  		for arch in $(RELEASE_ARCHES); do \
-			echo signadot/hotrod:${RELEASE_TAG}-$$os-$$arch >> dist/release-images.txt; \
+			echo emminex23/hotrod:${RELEASE_TAG}-$$os-$$arch >> dist/release-images.txt; \
 		done; \
 	done;
 
@@ -58,9 +58,9 @@ release: build-release release-images.txt tag-release
 			GOOS=$$os GOARCH=$$arch $(MAKE) push-docker; \
 		done; \
 	done;
-	$(DOCKER) manifest create --amend signadot/hotrod:$(RELEASE_TAG) \
+	$(DOCKER) manifest create --amend emminex23/hotrod:$(RELEASE_TAG) \
 		$(shell cat dist/release-images.txt)
-	$(DOCKER) manifest push signadot/hotrod:$(RELEASE_TAG)
+	$(DOCKER) manifest push emminex23/hotrod:$(RELEASE_TAG)
 
 generate-proto:
 	protoc --go_out=. --go_opt=paths=source_relative \
