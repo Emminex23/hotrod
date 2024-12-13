@@ -122,10 +122,9 @@ func (s *Server) getLocation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := json.Marshal(response)
 
         type AltResponse struct {
-                ID int
+                ID int64
                 Coordinates string
         }
         altResponse := &AltResponse{ID: response.ID, Coordinates: response.Coordinates}
