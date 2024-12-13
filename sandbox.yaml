@@ -1,0 +1,8 @@
+name: demo-sandbox
+spec:
+  cluster: demo-cluster
+  forks:
+  - forkOf:
+      kind: Deployment
+      namespace: hotrod
+      name: location
