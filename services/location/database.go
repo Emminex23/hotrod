@@ -78,6 +78,8 @@ var seed = []Location{
 		ID:          731,
 		Coordinates: "728,326",
 	},
+        {
+        },
 }
 
 func newDatabase(logger log.Factory) *database {
