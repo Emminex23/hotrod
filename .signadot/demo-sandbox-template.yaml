@@ -1,0 +1,17 @@
+name: "@{name}"
+spec:
+  description: sandbox for "@{service}" service
+  cluster: demo-cluster
+  labels:
+    signadot/github-repo: "Emminex23/hotrod"
+    signadot/github-pull-request: "@{github-pr}"
+    branch: "@{branch}"
+  forks:
+  - forkOf:
+      kind: Deployment
+      name: "@{service}"
+      namespace: "@{namespace}"
+    customizations:
+      images:
+      - container: hotrod
+        image: "emminex23/hotrod-smart-test:@{tag}"

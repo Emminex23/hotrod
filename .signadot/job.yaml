@@ -1,0 +1,47 @@
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    # dependency on building image for a service.
+    needs: [ build, changes ]
+    env:
+      SIGNADOT_ORG: emminex23
+      SIGNADOT_API_KEY: ${{ secrets.SIGNADOT_API_KEY }}
+      SIGNADOT_CLUSTER: demo-cluster
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Set up Signadot CLI
+        run: |
+          curl -sSLf https://raw.githubusercontent.com/signadot/cli/main/scripts/install.sh | sh
+
+      # Create / update sandbox
+      - name: Apply Sandbox
+        run: |
+          # Define the sandbox name using a short version of the gitsha to respect the
+          # limit (30 chars)
+          export SANDBOX_NAME="my-svc-${IMAGE_TAG:0:6}"
+          echo "SANDBOX_NAME=${SANDBOX_NAME}" >> "$GITHUB_ENV"
+
+          # Create the sandbox
+          echo "Creating sandbox ${SANDBOX_NAME}..."
+          signadot sandbox apply \
+            --set name=${SANDBOX_NAME} \
+            --set image=emminex23/hotrod-smart-test:${IMAGE_TAG} \
+            --set cluster=${SIGNADOT_CLUSTER} \
+            -f - \
+            < ${GITHUB_WORKSPACE}/.signadot/demo-sandbox-template.yaml
+
+      # Optionally run automated tests using jobs
+      - name: Run Automated Tests
+        run: |
+          echo "Running automated tests..."
+          signadot job submit --attach -f \
+            --set branch=... \
+            -f - \
+            < ${GITHUB_WORKSPACE}/.signadot/job.yaml
+
+      # Optionally delete the sandbox if only running automated tests
+      # else you may omit this and delete on PR close / using TTL
+      - name: Delete Sandbox 
+        run: |
+          echo "Deleting sandbox..."
+          signadot sandbox delete ${SANDBOX_NAME}
