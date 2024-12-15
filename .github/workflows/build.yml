@@ -98,7 +98,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && needs.changes.outputs.route == 'true' }}
     needs: [ build, changes ]
     env:
-      SIGNADOT_ORG: signadot
+      SIGNADOT_ORG: emminex23
       SIGNADOT_API_KEY: ${{ secrets.SIGNADOT_API_KEY }}
       SANDBOX_IMAGE_TAG: ${{ github.sha }}-linux-amd64
       SANDBOX_NAME: pr-${{ github.event.number }}-route
@@ -135,12 +135,12 @@ jobs:
           signadot sandbox apply \
             --set name=${SANDBOX_NAME} \
             --set github-pr=${{ github.event.number }} \
-            --set image=signadot/hotrod:${SANDBOX_IMAGE_TAG} \
+            --set image=emminex23/hotrod-smart-test:${SANDBOX_IMAGE_TAG} \
             --set branch=${{ github.head_ref }} \
             --set service=route \
             --set namespace=${NAMESPACE} \
             -f - \
-            < ${GITHUB_WORKSPACE}/.signadot/sbx-gh-template.yaml
+            < ${GITHUB_WORKSPACE}/.signadot/demo-sandbox-template.yaml
 
       - id: get-comment-body
         if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
@@ -211,7 +211,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && needs.changes.outputs.frontend == 'true' }}
     needs: [ build, changes ]
     env:
-      SIGNADOT_ORG: signadot
+      SIGNADOT_ORG: emminex23
       SIGNADOT_API_KEY: ${{ secrets.SIGNADOT_API_KEY }}
       SANDBOX_IMAGE_TAG: ${{ github.sha }}-linux-amd64
       SANDBOX_NAME: pr-${{ github.event.number }}-frontend
@@ -248,12 +248,12 @@ jobs:
           signadot sandbox apply \
             --set name=${SANDBOX_NAME} \
             --set github-pr=${{ github.event.number }} \
-            --set image=signadot/hotrod:${SANDBOX_IMAGE_TAG} \
+            --set image=emminex23/hotrod-smart-test:${SANDBOX_IMAGE_TAG} \
             --set branch=${{ github.head_ref }} \
             --set service=frontend \
             --set namespace=${NAMESPACE} \
             -f - \
-            < ${GITHUB_WORKSPACE}/.signadot/sbx-gh-template.yaml
+            < ${GITHUB_WORKSPACE}/.signadot/demo-sandbox-template.yaml
 
       - id: get-comment-body
         if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
@@ -319,7 +319,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && needs.changes.outputs.location == 'true' }}
     needs: [ build, changes ]
     env:
-      SIGNADOT_ORG: signadot
+      SIGNADOT_ORG: emminex23
       SIGNADOT_API_KEY: ${{ secrets.SIGNADOT_API_KEY }}
       SANDBOX_IMAGE_TAG: ${{ github.sha }}-linux-amd64
       SANDBOX_NAME: pr-${{ github.event.number }}-location
@@ -361,7 +361,7 @@ jobs:
             --set service=location \
             --set namespace=${NAMESPACE} \
             -f - \
-            < ${GITHUB_WORKSPACE}/.signadot/sbx-gh-template.yaml
+            < ${GITHUB_WORKSPACE}/.signadot/demo-sandbox-template.yaml
 
       - id: get-comment-body
         if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
@@ -432,7 +432,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && needs.changes.outputs.driver == 'true' }}
     needs: [ build, changes ]
     env:
-      SIGNADOT_ORG: signadot
+      SIGNADOT_ORG: emminex23
       SIGNADOT_API_KEY: ${{ secrets.SIGNADOT_API_KEY }}
       SANDBOX_IMAGE_TAG: ${{ github.sha }}-linux-amd64
       SANDBOX_NAME: pr-${{ github.event.number }}-driver
@@ -474,7 +474,7 @@ jobs:
             --set service=driver \
             --set namespace=${NAMESPACE} \
             -f - \
-            < ${GITHUB_WORKSPACE}/.signadot/sbx-gh-template.yaml
+            < ${GITHUB_WORKSPACE}/.signadot/demo-sandbox-template.yaml
 
       - id: get-comment-body
         if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
