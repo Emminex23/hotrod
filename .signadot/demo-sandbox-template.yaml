@@ -1,6 +1,6 @@
-name: "@{name}"
+name: demo-sandbox
 spec:
-  description: sandbox for "@{service}" service
+  description: sandbox for location service
   cluster: demo-cluster
   labels:
     signadot/github-repo: "Emminex23/hotrod"
@@ -9,8 +9,8 @@ spec:
   forks:
   - forkOf:
       kind: Deployment
-      name: "@{service}"
-      namespace: "@{namespace}"
+      name: location
+      namespace: hotrod
     customizations:
       images:
       - container: hotrod
