@@ -316,13 +316,13 @@ jobs:
 
   sandbox-location:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && needs.changes.outputs.location == 'true' }}
+    if: ${{ github.event_name == 'pull_request' && needs.changes.outputs.location == 'true' }}
     needs: [ build, changes ]
     env:
       SIGNADOT_ORG: emminex23
       SIGNADOT_API_KEY: ${{ secrets.SIGNADOT_API_KEY }}
       SANDBOX_IMAGE_TAG: ${{ github.sha }}-linux-amd64
-      SANDBOX_NAME: location-${{ github.event.number }}-location
+      SANDBOX_NAME: pr-${{ github.event.number }}-location
     steps:
       - uses: actions/checkout@v3
 
@@ -338,7 +338,7 @@ jobs:
       - name: Define Namespace
         run: |
           echo "Checking for labels..."
-          LABELS="${{ toJSON(github.event.push.labels.*.name) }}"
+          LABELS="${{ toJSON(github.event.pull_request.labels.*.name) }}"
           echo "Labels on PR: $LABELS"
           if [[ "$LABELS" == *"istio"* ]]; then
             echo "Found istio label"
@@ -364,7 +364,7 @@ jobs:
             < ${GITHUB_WORKSPACE}/.signadot/demo-sandbox-template.yaml
 
       - id: get-comment-body
-        if: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]' }}
+        if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
         run: |
           body="https://app.signadot.com/sandbox/name/${SANDBOX_NAME}"
           body="${body//'%'/'%25'}"
@@ -372,20 +372,20 @@ jobs:
           body="${body//$'\r'/'%0D'}"
           echo "::set-output name=body::$body"
       - name: Find Comment
-        if: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]' }}
+        if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
         uses: peter-evans/find-comment@v2
         id: fc
         with:
-          issue-number: ${{ github.event.push.number }}
+          issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: Location Sandbox
 
       - name: Create or update comment
-        if: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]' }}
+        if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.push.number }}
+          issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body: |
             Location Sandbox Ready!
@@ -469,7 +469,7 @@ jobs:
           signadot sandbox apply \
             --set name=${SANDBOX_NAME} \
             --set github-pr=${{ github.event.number }} \
-            --set image=signadot/hotrod:${SANDBOX_IMAGE_TAG} \
+            --set image=emminex23/hotrod-smart-test:${SANDBOX_IMAGE_TAG} \
             --set branch=${{ github.head_ref }} \
             --set service=driver \
             --set namespace=${NAMESPACE} \
