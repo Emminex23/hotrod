@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The Jaeger Authors.
+// Copyright (c) 2019 The Jaeger Authors..
 // Copyright (c) 2017 Uber Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ import (
 type Location struct {
 	ID          int64  `json:"id"`
 	Name        string `json:"name"`
-	Coordinates string `json:"coordinates"`
+	Coordinates string `json:"-"`
 }
 
 // Interface exposed by the Location service.
