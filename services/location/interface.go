@@ -23,7 +23,7 @@ import (
 type Location struct {
 	ID          int64  `json:"id"`
 	Name        string `json:"name"`
-	Coordinates string `json:"-"`
+	Coordinates string `json:"coordinates"`
 }
 
 // Interface exposed by the Location service.
